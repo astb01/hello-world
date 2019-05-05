@@ -21,6 +21,7 @@ pipeline {
   stages {
     stage('Maven Set up') {
       steps {
+        sh 'printenv'
         sh 'mvn clean install'
       }
     }
