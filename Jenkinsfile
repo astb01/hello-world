@@ -50,9 +50,6 @@ pipeline {
         sh "docker system prune --force"
     }
     success {
-        when {
-          branch 'master'
-        }
         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "echo ${env.dockerHubPassword} | docker login --u --password-stdin"
           sh "docker push ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:latest"
