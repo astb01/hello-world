@@ -7,6 +7,7 @@ pipeline {
 
   tools {
     maven 'mvn-3.6.1'
+    jdk 'openjdk11'
   }
 
   environment {
