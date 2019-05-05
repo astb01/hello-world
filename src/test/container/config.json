@@ -14,7 +14,7 @@
   }],
   "metadataTest": {
     "exposedPorts": [ "8085" ],
-    "entrypoint": [ "java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar" ],
+    "entrypoint": [ "java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar" ],
     "cmd": [],
     "workdir": "",
     "labels": [{
