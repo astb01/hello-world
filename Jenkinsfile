@@ -46,15 +46,12 @@ pipeline {
     }
 
     stage('Push to Docker') {
-        when {
-            branch 'origin/master'
-        }
-        steps {
-            withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                  sh "echo ${env.dockerHubPassword} | docker login -u --password-stdin"
-                  sh "docker push ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:latest"
-                  sh "docker push ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:${env.VERSION_NUMBER}"
-                }
+        if (env.GIT_BRANCH == 'origin/master') {
+        withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+              sh "echo ${env.dockerHubPassword} | docker login -u --password-stdin"
+              sh "docker push ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:latest"
+              sh "docker push ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:${env.VERSION_NUMBER}"
+            }
         }
     }
   }
