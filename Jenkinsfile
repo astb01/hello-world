@@ -12,6 +12,7 @@ pipeline {
     VERSION_NUMBER = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
     CONTAINER_TESTS_DIR = "${env.WORKSPACE}/src/test/container"
   }
+
   stages {
     stage('Maven Set up') {
       agent {
@@ -26,6 +27,7 @@ pipeline {
     }
 
     stage('Lint Dockerfile') {
+      agent any
       steps {
         sh "docker run --rm -i hadolint/hadolint hadolint --ignore DL4006 - < Dockerfile"
       }
@@ -40,6 +42,8 @@ pipeline {
     }
 
     stage('Test Docker Image') {
+      agent any
+
       steps {
         sh "pwd"
         sh "container-structure-test test --image ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:latest --config ${env.CONTAINER_TESTS_DIR}/config.json"
@@ -48,6 +52,11 @@ pipeline {
 
     stage('Docker Push') {
       agent any
+
+      when {
+        branch 'master'
+      }
+
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "echo ${env.dockerHubPassword} | docker login --u --password-stdin"
@@ -58,6 +67,8 @@ pipeline {
     }
 
     stage('Clean Up') {
+      agent any
+
       steps {
         sh "docker system prune --force"
       }
