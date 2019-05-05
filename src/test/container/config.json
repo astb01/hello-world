@@ -13,7 +13,7 @@
     "permissions": "-rw-r--r--"
   }],
   "metadataTest": {
-    "exposedPorts": [ "8085" ],
+    "exposedPorts": [ "8080" ],
     "entrypoint": [ "java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar" ],
     "cmd": [],
     "workdir": "",
