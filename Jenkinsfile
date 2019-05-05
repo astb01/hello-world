@@ -33,7 +33,7 @@ pipeline {
 
     stage('Docker Build') {
       steps {
-        sh "docker build --tag ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:latest --tag ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:${env.VERSION_NUMBER} ."
+        sh "docker build -t ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:latest -t ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:${env.VERSION_NUMBER} ."
       }
     }
 
