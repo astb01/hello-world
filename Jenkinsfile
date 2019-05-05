@@ -1,4 +1,8 @@
 pipeline {
+  options {
+    buildDiscarder(logRotator(daysToKeepStr: '1', numToKeepStr: '3'))
+  }
+
   environment {
     DOCKER_REPO_USER = 'astb01'
     DOCKER_REPO_NAME = 'helloworld'
