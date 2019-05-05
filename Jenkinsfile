@@ -33,14 +33,14 @@ pipeline {
 
     stage('Docker Build') {
       steps {
-        sh "docker build -t ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:latest -t ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:${env.VERSION_NUMBER} ."
+        sh "docker build -t ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:latest -t ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:${env.VERSION_NUMBER} ."
       }
     }
 
     stage('Test Docker Image') {
       steps {
         sh "pwd"
-        sh "container-structure-test test --image ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:latest --config ${env.CONTAINER_TESTS_DIR}/config.json"
+        sh "container-structure-test test --image ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:latest --config ${env.CONTAINER_TESTS_DIR}/config.json"
       }
     }
   }
@@ -55,8 +55,8 @@ pipeline {
         }
         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "echo ${env.dockerHubPassword} | docker login --u --password-stdin"
-          sh "docker push ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:latest"
-          sh "docker push ${env.DOCKER_REPO_USER}:${env.DOCKER_REPO_NAME}:${env.VERSION_NUMBER}"
+          sh "docker push ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:latest"
+          sh "docker push ${env.DOCKER_REPO_USER}/${env.DOCKER_REPO_NAME}:${env.VERSION_NUMBER}"
         }
     }
   }
